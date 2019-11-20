@@ -1,0 +1,6 @@
+alembic
+sqlalchemy
+sshtunnel
+pymysql
+ex-tools
+inflection
