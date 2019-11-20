@@ -1,3 +1,5 @@
 db_config.ini
 .idea
 migration/alembic/versions/*.py
+*/__pycache__/*
+*.pyc
