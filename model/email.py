@@ -1,12 +1,11 @@
 from sqlalchemy import Column, String, BigInteger, ForeignKey
-from sqlalchemy.dialects.mysql import MEDIUMTEXT
+from sqlalchemy.dialects.mysql import MEDIUMBLOB
 
 from .base import BasicMixin, BaseObject
 
 
 class ExternalEmail(BaseObject, BasicMixin):
     address = Column(String(128), unique=True)
-    user_id = Column(BigInteger, ForeignKey('users.id'))
 
 
 class InternalEmail(BaseObject, BasicMixin):
@@ -24,5 +23,5 @@ class Message(BaseObject, BasicMixin):
     message_to = Column(String(128))
     message_from = Column(String(128))
     message_text = Column(String(128))
-    message_dump = Column(MEDIUMTEXT)
+    message_dump = Column(MEDIUMBLOB)
     reply_address = Column(String(128), unique=True)
