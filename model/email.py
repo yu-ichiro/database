@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, BigInteger, ForeignKey
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
 
-from model import BasicMixin, BaseObject
+from .base import BasicMixin, BaseObject
 
 
 class ExternalEmail(BaseObject, BasicMixin):
