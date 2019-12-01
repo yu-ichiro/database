@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 from typing import Dict, Optional, Union
-from ex_tools import Empty
+
+from ex_tools import Empty, wraps
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine, Connection
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
@@ -106,3 +107,13 @@ class DBConnection:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.exit(exc_type, exc_val, exc_tb)
+
+
+def connect(func):
+    @wraps(func)
+    def inner(*args, db=None, **kwargs):
+        if not db:
+            with DBConnection() as temp_db:
+                return func(*args, db=temp_db, **kwargs)
+        return func(*args, db=db, **kwargs)
+    return inner
