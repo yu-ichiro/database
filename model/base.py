@@ -5,16 +5,11 @@ from sqlalchemy import (
     schema
 )
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.sql.functions import GenericFunction
+from sqlalchemy.sql.functions import current_timestamp
 from inflection import underscore, pluralize
 
 metadata = schema.MetaData()
 BaseObject = declarative_base(metadata=metadata)
-
-
-# noinspection PyPep8Naming
-class current_timestamp(GenericFunction):
-    type = DateTime
 
 
 class BasicMixin:

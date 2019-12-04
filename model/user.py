@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, ForeignKey, BigInteger, Index
+from sqlalchemy import Column, Text, ForeignKey, BigInteger, Index, Integer
 
 from .base import BaseObject, BasicMixin
 
@@ -7,6 +7,7 @@ class User(BaseObject, BasicMixin):
     name = Column(Text)
     furigana = Column(Text)
     primary_external_email_id = Column(BigInteger)
+    period = Column(Integer)
 
     # tuple
     __table_args__ = Index('idx_primary_external_email_id', 'primary_external_email_id'),
