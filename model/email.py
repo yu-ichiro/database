@@ -7,6 +7,7 @@ from .base import BasicMixin, BaseObject
 class ExternalEmail(BaseObject, BasicMixin):
     address = Column(String(128), unique=True)
     active_confirm = Column(DateTime)
+    user_id = Column(BigInteger, ForeignKey('users.id'))
 
 
 class InternalEmail(BaseObject, BasicMixin):
