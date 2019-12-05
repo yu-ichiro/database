@@ -1,6 +1,4 @@
-from enum import IntEnum
-
-from sqlalchemy import Column, String, BigInteger, ForeignKey, Text, Integer, Index
+from sqlalchemy import Column, String, BigInteger, ForeignKey, Text, Integer, Index, DateTime
 from sqlalchemy.dialects.mysql import MEDIUMBLOB, MEDIUMTEXT
 
 from .base import BasicMixin, BaseObject
@@ -8,6 +6,7 @@ from .base import BasicMixin, BaseObject
 
 class ExternalEmail(BaseObject, BasicMixin):
     address = Column(String(128), unique=True)
+    active_confirm = Column(DateTime)
 
 
 class InternalEmail(BaseObject, BasicMixin):
