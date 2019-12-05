@@ -3,3 +3,4 @@ db_config.ini
 migration/alembic/versions/*.py
 */__pycache__/*
 *.pyc
+.DS_Store
