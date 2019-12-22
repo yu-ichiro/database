@@ -8,6 +8,7 @@ class ExternalEmail(BaseObject, BasicMixin):
     address = Column(String(128), unique=True)
     active_confirm = Column(DateTime)
     user_id = Column(BigInteger, ForeignKey('users.id'))
+    disabled = Column(Integer)
 
 
 class InternalEmail(BaseObject, BasicMixin):
@@ -33,6 +34,9 @@ class MessageQueueStatus:
     STATUS_UNPROCESSED = 0
     STATUS_ERROR = 1
     STATUS_SENT = 2
+    STATUS_DELIVERED = 3
+    STATUS_BOUNCE_TEMP = 4
+    STATUS_BOUNCE_PERM = 5
 
 
 class MessagePriority:
