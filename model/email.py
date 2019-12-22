@@ -62,9 +62,13 @@ class MessageQueue(BaseObject, BasicMixin, MessageQueueStatus, MessagePriority):
     priority = Column(Integer, nullable=False, default=0)
     user_id = Column(BigInteger)
     from_message_id = Column(BigInteger, ForeignKey('messages.id'))
+    mailgun_message_id = Column(String(256))
 
-    __table_args__ = Index('idx_status', 'status'),
+    __table_args__ = (
+        Index('idx_status', 'status'),
+        Index('idx_mailgun_message_id', 'mailgun_message_id'),
+    )
 
     @classmethod
     def default_sort_column(cls):
-        return cls.priority, cls.user_id, cls.from_message_id
+        return cls.priority, cls.user_id, cls.from_message_id, cls.status

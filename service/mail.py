@@ -33,7 +33,8 @@ def get_group_mail(internal_email: InternalEmail, *, db: DBConnection = None):
     ).outerjoin(Group, Group.id == UserGroupMap.group_id).outerjoin(
         InternalEmailMap, or_(InternalEmailMap.user_id == User.id, InternalEmailMap.group_id == Group.id)
     ).filter(
-        InternalEmailMap.internal_email_id == internal_email.id
+        InternalEmailMap.internal_email_id == internal_email.id,
+        ExternalEmail.disabled.isnot(None)
     ).group_by(ExternalEmail.id):
         yield GroupMailMap(ml_address=internal_email.address,
                            external_address=external,
