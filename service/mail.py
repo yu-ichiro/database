@@ -31,7 +31,10 @@ def get_group_mail(internal_email: InternalEmail, *, db: DBConnection = None):
     ).join(User, User.primary_external_email_id == ExternalEmail.id).outerjoin(
         UserGroupMap, UserGroupMap.user_id == User.id
     ).outerjoin(Group, Group.id == UserGroupMap.group_id).outerjoin(
-        InternalEmailMap, or_(InternalEmailMap.user_id == User.id, InternalEmailMap.group_id == Group.id)
+        InternalEmailMap, or_(
+            InternalEmailMap.user_id == User.id,
+            InternalEmailMap.group_id == Group.id
+        )
     ).filter(
         InternalEmailMap.internal_email_id == internal_email.id
     ).group_by(ExternalEmail.id):
