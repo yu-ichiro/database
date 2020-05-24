@@ -1,6 +1,4 @@
-from enum import IntEnum
-
-from sqlalchemy import Column, String, BigInteger, ForeignKey, Text, Integer, Index
+from sqlalchemy import Column, String, BigInteger, ForeignKey, Text, Integer, Index, DateTime
 from sqlalchemy.dialects.mysql import MEDIUMBLOB, MEDIUMTEXT
 
 from .base import BasicMixin, BaseObject
@@ -8,6 +6,9 @@ from .base import BasicMixin, BaseObject
 
 class ExternalEmail(BaseObject, BasicMixin):
     address = Column(String(128), unique=True)
+    active_confirm = Column(DateTime)
+    user_id = Column(BigInteger, ForeignKey('users.id'))
+    disabled = Column(Integer)
 
 
 class InternalEmail(BaseObject, BasicMixin):
@@ -33,6 +34,9 @@ class MessageQueueStatus:
     STATUS_UNPROCESSED = 0
     STATUS_ERROR = 1
     STATUS_SENT = 2
+    STATUS_DELIVERED = 3
+    STATUS_BOUNCE_TEMP = 4
+    STATUS_BOUNCE_PERM = 5
 
 
 class MessagePriority:
@@ -58,9 +62,13 @@ class MessageQueue(BaseObject, BasicMixin, MessageQueueStatus, MessagePriority):
     priority = Column(Integer, nullable=False, default=0)
     user_id = Column(BigInteger)
     from_message_id = Column(BigInteger, ForeignKey('messages.id'))
+    mailgun_message_id = Column(String(256))
 
-    __table_args__ = Index('idx_status', 'status'),
+    __table_args__ = (
+        Index('idx_status', 'status'),
+        Index('idx_mailgun_message_id', 'mailgun_message_id'),
+    )
 
     @classmethod
     def default_sort_column(cls):
-        return cls.priority, cls.user_id, cls.from_message_id
+        return cls.priority, cls.user_id, cls.from_message_id, cls.status
