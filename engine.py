@@ -110,6 +110,8 @@ class DBConnection:
 
 
 def connect(func):
+    from config import DBConnection
+
     @wraps(func)
     def inner(*args, db=None, **kwargs):
         if not db:
